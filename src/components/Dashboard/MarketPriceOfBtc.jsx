@@ -5,8 +5,11 @@ import { LineChart, Line, ResponsiveContainer } from "recharts";
 import CircularProgress from '@mui/material/CircularProgress';
 
 function MarketPriceOfBtc({ Price }) {
-
-
+  var LastPrice = null
+  const coinPrice = parseFloat(Price).toFixed(2)
+  const Color =  LastPrice === coinPrice ? "white" : coinPrice > LastPrice ? "green" : 'red';
+  LastPrice = coinPrice;
+  console.log(Color)
   return (
     <Box
       sx={{
@@ -21,13 +24,13 @@ function MarketPriceOfBtc({ Price }) {
       }}
     >
       <Box
-        sx={{ display: "flex", flexDirection: "column", justifyContent: { xs: "center", lg: "center" },alignItems:"center", gap: 2, height: "100%" }}
+        sx={{ display: "flex", flexDirection: "column", justifyContent: { xs: "center", lg: "center" }, alignItems: "center", gap: 2, height: "100%" }}
       >
         <Typography
           sx={{
             color: "white",
             fontSize: { xs: "18px", md: "10px", lg: "18px" },
-textAlign:'center',
+            textAlign: 'center',
             fontWeight: 600,
           }}
         >
@@ -43,7 +46,7 @@ textAlign:'center',
           {/* price */}
           <Typography
             sx={{
-              color: "white",
+              color: `${Color}`,
               fontSize: { xs: "24px", md: "12px", lg: "26px" },
               fontWeight: 600,
             }}
@@ -72,48 +75,4 @@ textAlign:'center',
   );
 }
 
-const data = [
-  {
-    name: "Page A",
-    uv: 0,
-    pv: 0,
-    amt: 0,
-  },
-  {
-    name: "Page B",
-    uv: 800,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 750,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 950,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 920,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 1000,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3290,
-    pv: 4300,
-    amt: 2100,
-  },
-];
 export default MarketPriceOfBtc;

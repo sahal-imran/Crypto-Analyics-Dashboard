@@ -12,6 +12,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { ErrorOutline } from '@mui/icons-material';
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 const Index = () => {
 
@@ -58,6 +65,8 @@ const Index = () => {
   const [ETH_Data, set_ETH_Data] = useState([]);
   const [SHIB_Data, set_SHIB_Data] = useState([]);
   const [BTC_Bybit_Data, set_BTC_Bybit_Data] = useState([]);
+  const [Top5Coins, set_Top5Coins] = useState([]);
+  const [Top5Worst, set_Top5Worst] = useState([]);
 
   const FetchLastPriceBinanceBTC = () => {
 
@@ -66,7 +75,8 @@ const Index = () => {
         fetch('https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=BTCUSDT'),
         fetch('https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=ETHUSDT'),
         fetch('https://api.binance.com/api/v1/ticker/24hr?symbol=SHIBUSDT'),
-        fetch('https://api-testnet.bybit.com/derivatives/v3/public/tickers?category=linear&symbol=BTCUSDT')
+        fetch('https://api-testnet.bybit.com/derivatives/v3/public/tickers?category=linear&symbol=BTCUSDT'),
+        fetch('https://fapi.binance.com/fapi/v1/ticker/24hr')
       ]).then(function (responses) {
         return Promise.all(responses.map(function (response) {
           return response.json();
@@ -77,6 +87,15 @@ const Index = () => {
         set_ETH_Data(data[1]);
         set_SHIB_Data(data[2]);
         set_BTC_Bybit_Data(data[3].result.list[0]);
+        const Data = data[4];
+        Data.sort((a, b) => {
+          return parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent);
+        });
+        set_Top5Coins(Data.slice(0, 5));
+        Data.sort((a, b) => {
+          return parseFloat(a.priceChangePercent) - parseFloat(b.priceChangePercent);
+        });
+        set_Top5Worst(Data.slice(0, 5));
       })
     } catch (error) {
       console.log("Err while fetching all", error)
@@ -183,7 +202,7 @@ const Index = () => {
                           {/* price */}
                           <Typography
                             sx={{
-                              color: `${+BTC_Data?.priceChange >= 0 ? "green" : "red"}`,
+                              color: `${+BTC_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
                               fontSize: { xs: "26px", md: "12px", lg: "20px" },
                               fontWeight: 600,
                             }}
@@ -193,7 +212,7 @@ const Index = () => {
                           {/* percentage */}
                           <Typography
                             sx={{
-                              color: `${+BTC_Data?.priceChange >= 0 ? "green" : "red"}`,
+                              color: `${+BTC_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
                               fontSize: { xs: "16px", md: "12px", lg: "16px" },
                               fontWeight: 600,
                               display: "flex",
@@ -203,9 +222,9 @@ const Index = () => {
                               ml: "16px",
                             }}
                           >
-                            {+BTC_Data?.priceChange >= 0 ? `+ ${BTC_Data?.priceChange}` : `${BTC_Data?.priceChange}`}
+                            {+BTC_Data?.priceChangePercent >= 0 ? `+ ${BTC_Data?.priceChangePercent}` : `${BTC_Data?.priceChangePercent}`}
                             {
-                              +BTC_Data?.priceChange >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
+                              +BTC_Data?.priceChangePercent >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
                             }
                           </Typography>
                         </Box>
@@ -246,7 +265,7 @@ const Index = () => {
                           {/* price */}
                           <Typography
                             sx={{
-                              color: `${+ETH_Data?.priceChange >= 0 ? "green" : "red"}`,
+                              color: `${+ETH_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
                               fontSize: { xs: "26px", md: "12px", lg: "20px" },
                               fontWeight: 600,
                             }}
@@ -256,7 +275,7 @@ const Index = () => {
                           {/* percentage */}
                           <Typography
                             sx={{
-                              color: `${+ETH_Data?.priceChange >= 0 ? "green" : "red"}`,
+                              color: `${+ETH_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
                               fontSize: { xs: "16px", md: "12px", lg: "16px" },
                               fontWeight: 600,
                               display: "flex",
@@ -266,9 +285,9 @@ const Index = () => {
                               ml: "16px",
                             }}
                           >
-                            {+ETH_Data?.priceChange >= 0 ? `+ ${ETH_Data?.priceChange}` : `${ETH_Data?.priceChange}`}
+                            {+ETH_Data?.priceChangePercent >= 0 ? `+ ${ETH_Data?.priceChangePercent}` : `${ETH_Data?.priceChangePercent}`}
                             {
-                              +ETH_Data?.priceChange >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
+                              +ETH_Data?.priceChangePercent >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
                             }
                           </Typography>
                         </Box>
@@ -309,7 +328,7 @@ const Index = () => {
                           {/* price */}
                           <Typography
                             sx={{
-                              color: `${+SHIB_Data?.priceChange >= 0 ? "green" : "red"}`,
+                              color: `${+SHIB_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
                               fontSize: { xs: "20px", md: "12px", lg: "20px" },
                               fontWeight: 600,
                             }}
@@ -319,7 +338,7 @@ const Index = () => {
                           {/* percentage */}
                           <Typography
                             sx={{
-                              color: `${+SHIB_Data?.priceChange >= 0 ? "green" : "red"}`,
+                              color: `${+SHIB_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
                               fontSize: { xs: "16px", md: "12px", lg: "16px" },
                               fontWeight: 600,
                               display: "flex",
@@ -329,9 +348,9 @@ const Index = () => {
                               ml: "16px",
                             }}
                           >
-                            {+SHIB_Data?.priceChange >= 0 ? `+ ${SHIB_Data?.priceChange}` : `${SHIB_Data?.priceChange}`}
+                            {+SHIB_Data?.priceChangePercent >= 0 ? `+ ${SHIB_Data?.priceChangePercent}` : `${SHIB_Data?.priceChangePercent}`}
                             {
-                              +SHIB_Data?.priceChange >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
+                              +SHIB_Data?.priceChangePercent >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
                             }
                           </Typography>
                         </Box>
@@ -458,83 +477,30 @@ const Index = () => {
                     >
                       In Last 24 hours top 5 coins
                     </Typography>
-                    {[0, 1, 2, 3, 4].map(() => {
-                      return (
-                        <Box
-                          sx={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          {/* image and coin name */}
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              gap: 2,
-                            }}
-                          >
-                            {/* image */}
-                            <Box
-                              sx={{
-                                width: { xs: "30px", md: "20px", lg: "30px" },
-                                height: { xs: "30px", md: "20px", lg: "30px" },
-                                position: "relative",
-                              }}
+                    <TableContainer>
+                      <Table sx={{ width: '100%' }} size="small" aria-label="a dense table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell sx={{ color: "white" }}>Symbol</TableCell>
+                            <TableCell sx={{ color: "white" }} align="right">24hVolume</TableCell>
+                            <TableCell sx={{ color: "white" }} align="right">24hChange</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {Top5Coins.map((row, index) => (
+                            <TableRow
+                              key={index}
                             >
-                              <img
-                                src="./bitCoin.png"
-                                alt="icon"
-                                style={{
-                                  position: "absolute",
-                                  width: "100%",
-                                  height: "100%",
-                                }}
-                              />
-                            </Box>
-                            <Typography
-                              sx={{
-                                color: "white",
-                                fontSize: { xs: "14px", md: "10px", lg: "14px" },
-                                fontWeight: 600,
-                                textTransform: "uppercase",
-                                textAlign: "center",
-                              }}
-                            >
-                              bitcoin
-                            </Typography>
-                          </Box>
-                          {/* current price */}
-                          <Typography
-                            sx={{
-                              color: "red",
-                              fontSize: { xs: "14px", md: "10px", lg: "14px" },
-
-                              textTransform: "uppercase",
-                              textAlign: "center",
-                            }}
-                          >
-                            0.99272
-                          </Typography>
-
-                          {/* 24 hours voulume price */}
-                          <Typography
-                            sx={{
-                              color: "green",
-                              fontSize: { xs: "14px", md: "10px", lg: "14px" },
-
-                              textTransform: "uppercase",
-                              textAlign: "center",
-                            }}
-                          >
-                            0.578.0%
-                          </Typography>
-                        </Box>
-                      );
-                    })}
+                              <TableCell sx={{ color: "white", border: "unset" }} component="th" scope="row">
+                                {row.symbol}
+                              </TableCell>
+                              <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.volume}</TableCell>
+                              <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.priceChangePercent+ "%"}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                   </Box>
                   {/* worst coins */}
                   <Box
@@ -561,88 +527,33 @@ const Index = () => {
                         textAlign: "center",
                       }}
                     >
-                      In Last 24 hours top 5 coins
+                      In Last 24 hours top 5 worst coins
                     </Typography>
 
-                    {[0, 1, 2, 3, 4].map(() => {
-                      return (
-                        <Box
-                          sx={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                          }}
-                        >
-                          {/* image and coin name */}
-                          <Box
-                            sx={{
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              gap: 2,
-                            }}
-                          >
-                            {/* image */}
-                            <Box
-                              sx={{
-                                width: { xs: "30px", md: "20px", lg: "30px" },
-
-                                height: { xs: "30px", md: "20px", lg: "30px" },
-
-                                position: "relative",
-                              }}
+                    <TableContainer>
+                      <Table sx={{ width: '100%' }} size="small" aria-label="a dense table">
+                        <TableHead>
+                          <TableRow>
+                            <TableCell sx={{ color: "white" }}>Symbol</TableCell>
+                            <TableCell sx={{ color: "white" }} align="right">24hVolume</TableCell>
+                            <TableCell sx={{ color: "white" }} align="right">24hChange</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {Top5Worst.map((row, index) => (
+                            <TableRow
+                              key={index}
                             >
-                              <img
-                                src="./bitCoin.png"
-                                alt="icon"
-                                style={{
-                                  position: "absolute",
-                                  width: "100%",
-                                  height: "100%",
-                                }}
-                              />
-                            </Box>
-                            <Typography
-                              sx={{
-                                color: "white",
-                                fontSize: { xs: "10px", lg: "14px" },
-                                fontWeight: 600,
-                                textTransform: "uppercase",
-                                textAlign: "center",
-                              }}
-                            >
-                              bitcoin
-                            </Typography>
-                          </Box>
-                          {/* current price */}
-                          <Typography
-                            sx={{
-                              color: "red",
-                              fontSize: { xs: "14px", md: "10px", lg: "14px" },
-
-                              textTransform: "uppercase",
-                              textAlign: "center",
-                            }}
-                          >
-                            0.99272
-                          </Typography>
-
-                          {/* 24 hours voulume price */}
-                          <Typography
-                            sx={{
-                              color: "green",
-                              fontSize: { xs: "14px", md: "10px", lg: "14px" },
-
-                              textTransform: "uppercase",
-                              textAlign: "center",
-                            }}
-                          >
-                            0.578.0%
-                          </Typography>
-                        </Box>
-                      );
-                    })}
+                              <TableCell sx={{ color: "white", border: "unset" }} component="th" scope="row">
+                                {row.symbol}
+                              </TableCell>
+                              <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.volume}</TableCell>
+                              <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.priceChangePercent + "%"}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                   </Box>
                 </Box>
               </Box>
