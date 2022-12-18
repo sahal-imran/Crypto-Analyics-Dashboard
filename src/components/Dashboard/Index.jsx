@@ -57,6 +57,7 @@ const Index = () => {
   const [BTC_Data, set_BTC_Data] = useState([]);
   const [ETH_Data, set_ETH_Data] = useState([]);
   const [SHIB_Data, set_SHIB_Data] = useState([]);
+  const [BTC_Bybit_Data, set_BTC_Bybit_Data] = useState([]);
 
   const FetchLastPriceBinanceBTC = () => {
 
@@ -64,7 +65,8 @@ const Index = () => {
       Promise.all([
         fetch('https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=BTCUSDT'),
         fetch('https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=ETHUSDT'),
-        fetch('https://api.binance.com/api/v1/ticker/24hr?symbol=SHIBUSDT')
+        fetch('https://api.binance.com/api/v1/ticker/24hr?symbol=SHIBUSDT'),
+        fetch('https://api-testnet.bybit.com/derivatives/v3/public/tickers?category=linear&symbol=BTCUSDT')
       ]).then(function (responses) {
         return Promise.all(responses.map(function (response) {
           return response.json();
@@ -73,14 +75,15 @@ const Index = () => {
         // console.log(data);
         set_BTC_Data(data[0]);
         set_ETH_Data(data[1]);
-        set_SHIB_Data(data[2])
+        set_SHIB_Data(data[2]);
+        set_BTC_Bybit_Data(data[3].result.list[0]);
       })
     } catch (error) {
       console.log("Err while fetching all", error)
     }
   }
 
-  console.log(BTC_Data);
+  console.log(BTC_Bybit_Data);
 
   useEffect(() => {
     FetchLastPriceBinanceBTC();
@@ -398,8 +401,6 @@ const Index = () => {
                           }}
                         >
                           <MarketPriceOfBtc Price={lastJsonMessage?.data?.p} />
-                          {/* <MarketPriceOfBtc Price={5000} /> */}
-
                         </Box>
                         {/* fear and greedy  */}
                         <Box
@@ -414,7 +415,7 @@ const Index = () => {
                     </Grid>
                     {/* Last price futures pair btc/usdt - binance and bybit */}
                     <Grid item xs={12} md={6}>
-                      <LastPairPriceBtc BTC_Data={BTC_Data} />
+                      <LastPairPriceBtc BTC_Data={BTC_Data} BTC_Bybit_Data={BTC_Bybit_Data} />
                     </Grid>
                   </Grid>
                 </Box>

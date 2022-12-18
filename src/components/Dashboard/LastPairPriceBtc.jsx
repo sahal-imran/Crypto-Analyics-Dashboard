@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 
-function LastPairPriceBtc({ BTC_Data }) {
+function LastPairPriceBtc({ BTC_Data,BTC_Bybit_Data }) {
   return (
     <Box
       sx={{
@@ -40,7 +40,10 @@ function LastPairPriceBtc({ BTC_Data }) {
           Last price BTCUSDT<br /> (Binacne)
         </Typography>
         <Typography
-          sx={{ fontSize: { xs: "26px", md: "12px", lg: "26px" }, fontWeight: 600, color: `${+BTC_Data?.priceChange >= 0 ? "green" : "red"}` }}
+          sx={{ fontSize: { xs: "26px", md: "12px", lg: "26px" }, fontWeight: 600, 
+          // color: `${+BTC_Data?.priceChange >= 0 ? "green" : "red"}`
+          color:"white"
+        }}
         >
           {!BTC_Data ? "Loading" : +BTC_Data?.lastPrice}
         </Typography>
@@ -73,7 +76,7 @@ function LastPairPriceBtc({ BTC_Data }) {
         <Typography
           sx={{ fontSize: { xs: "26px", md: "12px", lg: "26px" }, fontWeight: 600 }}
         >
-          89.9080K
+          {+BTC_Bybit_Data?.lastPrice}
         </Typography>
       </Box>
     </Box>
