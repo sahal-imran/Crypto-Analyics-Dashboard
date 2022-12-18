@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  max-height: 100vh;
+  max-width: 100vw;
+  background-color: #1c1c1c;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+.greedyImg img {
+  border-radius: 10px;
+}
+* {
+  box-sizing: border-box;
+}
+
