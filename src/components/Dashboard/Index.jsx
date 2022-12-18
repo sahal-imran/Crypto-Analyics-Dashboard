@@ -295,7 +295,7 @@ const Index = () => {
                             fontWeight: 600,
                           }}
                         >
-                          ETHUSDT
+                          SHIBUSDT
                         </Typography>
                         <Box
                           sx={{
