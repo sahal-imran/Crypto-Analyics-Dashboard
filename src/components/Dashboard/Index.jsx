@@ -83,8 +83,7 @@ const Index = () => {
     }
   }
 
-  console.log(BTC_Bybit_Data);
-
+  // console.log(BTC_Bybit_Data);
   useEffect(() => {
     FetchLastPriceBinanceBTC();
   }, [BTC_Data])

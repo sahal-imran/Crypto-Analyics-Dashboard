@@ -21,13 +21,13 @@ function MarketPriceOfBtc({ Price }) {
       }}
     >
       <Box
-        sx={{ display: "flex", flexDirection: "column", justifyContent: { xs: "center", lg: "start" }, gap: 2, height: "50%" }}
+        sx={{ display: "flex", flexDirection: "column", justifyContent: { xs: "center", lg: "center" },alignItems:"center", gap: 2, height: "100%" }}
       >
         <Typography
           sx={{
             color: "white",
             fontSize: { xs: "18px", md: "10px", lg: "18px" },
-
+textAlign:'center',
             fontWeight: 600,
           }}
         >
@@ -36,7 +36,7 @@ function MarketPriceOfBtc({ Price }) {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             alignItems: "center",
           }}
         >
@@ -67,15 +67,6 @@ function MarketPriceOfBtc({ Price }) {
             <TrendingUpIcon sx={{ fontSize: "16px", color: "white" }} />
           </Typography> */}
         </Box>
-      </Box>
-
-      {/* chart */}
-      <Box sx={{ display: "flex", height: "50%", p: 2 }}>
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-          </LineChart>
-        </ResponsiveContainer>
       </Box>
     </Box>
   );
