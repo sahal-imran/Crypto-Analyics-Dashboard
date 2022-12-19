@@ -9,49 +9,39 @@ import TableRow from '@mui/material/TableRow';
 import React, { useState, useCallback, useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
-function Top5Coin() {
-    const socketUrl = "wss://stream.binance.com:9443/stream";
-    const {
-        sendMessage,
-        sendJsonMessage,
-        lastMessage,
-        lastJsonMessage,
-        readyState,
-        getWebSocket,
-    } = useWebSocket(socketUrl, {
-        onOpen: () => console.log('opened'),
-        //Will attempt to reconnect on all close events, such as server shutting down
-        shouldReconnect: (closeEvent) => true,
-    });
+function Top5Coin({ Gainer }) {
 
-    const handleClickSendMessage = useCallback(
-        () =>
-            sendJsonMessage({
-                method: "SUBSCRIBE",
-                params: ["!ticker@arr"],
-                id: 1
-            }),
-        [sendJsonMessage]
-    );
 
+    const apiCall = {
+        method: "SUBSCRIBE",
+        params: ["!ticker@arr"],
+        id: 1
+    };
+    const [Tickers, setTickers] = useState([]);
 
     useEffect(() => {
-        handleClickSendMessage();
-    }, [])
-
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: "Connecting",
-        [ReadyState.OPEN]: "Open",
-        [ReadyState.CLOSING]: "Closing",
-        [ReadyState.CLOSED]: "Closed",
-        [ReadyState.UNINSTANTIATED]: "Uninstantiated"
-    }[readyState];
-console.log(lastJsonMessage?.data)
-    const Sort = () => {
-        return lastJsonMessage?.data.sort((a, b) => {
-            return parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent);
-        });
-    }
+        const ws = new WebSocket('wss://stream.binance.com:9443/stream');
+        ws.onopen = (event) => {
+            ws.send(JSON.stringify(apiCall));
+        };
+        ws.onmessage = function (event) {
+            const json = JSON.parse(event.data);
+            try {
+                if (json.data) {
+                    const Data = json.data;
+                    Data.sort((a, b) => {
+                        return Gainer ? parseFloat(b.P) - parseFloat(a.P) : parseFloat(a.P) - parseFloat(b.P);
+                    });
+                    setTickers(Data.slice(0, 5));
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        //clean up function
+        return () => ws.close();
+    }, []);
+    console.log(Tickers);
 
 
     return (
@@ -91,7 +81,7 @@ console.log(lastJsonMessage?.data)
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {/* {Sort().map((row, index) => (
+                        {Tickers?.map((row, index) => (
                             <TableRow
                                 key={index}
                             >
@@ -101,7 +91,7 @@ console.log(lastJsonMessage?.data)
                                 <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.v}</TableCell>
                                 <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.P + "%"}</TableCell>
                             </TableRow>
-                        ))} */}
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>

@@ -5,9 +5,40 @@ import { LineChart, Line, ResponsiveContainer } from "recharts";
 import CircularProgress from '@mui/material/CircularProgress';
 
 function MarketPriceOfBtc({ Price }) {
+
+
+  const apiCall = {
+    method: "SUBSCRIBE",
+    params: ["btcusdt@trade"],
+    id: 1
+  };
+  const [BTC_INFO, setBTC_INFO] = useState([]);
+
+  useEffect(() => {
+    const ws = new WebSocket('wss://stream.binance.com:9443/stream');
+    ws.onopen = (event) => {
+      ws.send(JSON.stringify(apiCall));
+    };
+    ws.onmessage = function (event) {
+      const json = JSON.parse(event.data);
+      try {
+        if ((json.data)) {
+          setBTC_INFO(json.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    //clean up function
+    return () => ws.close();
+  }, []);
+  // console.log(BTC_INFO);
+
+
+
   var LastPrice = null
   const coinPrice = parseFloat(Price).toFixed(2)
-  const Color =  LastPrice === coinPrice ? "white" : coinPrice > LastPrice ? "green" : 'red';
+  const Color = LastPrice === coinPrice ? "white" : coinPrice > LastPrice ? "green" : 'red';
   LastPrice = coinPrice;
   // console.log(Color)
   return (
@@ -51,7 +82,7 @@ function MarketPriceOfBtc({ Price }) {
               fontWeight: 600,
             }}
           >
-            {!Price ? "Loading..." : parseFloat(Price).toFixed(2)}
+            {BTC_INFO?.length === 0 ? "Loading..." : parseFloat(BTC_INFO.p).toFixed(2)}
           </Typography>
           {/* percentage */}
           {/* <Typography
