@@ -72,11 +72,11 @@ const Index = () => {
 
     try {
       Promise.all([
-        fetch('https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=BTCUSDT'),
-        fetch('https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=ETHUSDT'),
+        fetch('https://api.binance.com/api/v1/ticker/24hr?symbol=BTCUSDT'),
+        fetch('https://api.binance.com/api/v1/ticker/24hr?symbol=ETHUSDT'),
         fetch('https://api.binance.com/api/v1/ticker/24hr?symbol=SHIBUSDT'),
         fetch('https://api-testnet.bybit.com/derivatives/v3/public/tickers?category=linear&symbol=BTCUSDT'),
-        fetch('https://fapi.binance.com/fapi/v1/ticker/24hr')
+        fetch('https://api.binance.com/api/v1/ticker/24hr')
       ]).then(function (responses) {
         return Promise.all(responses.map(function (response) {
           return response.json();
@@ -101,11 +101,14 @@ const Index = () => {
       console.log("Err while fetching all", error)
     }
   }
+  const Intervel = setInterval(function () {
+    return "hello"
+  }, 2000);
 
   // console.log(BTC_Bybit_Data);
   useEffect(() => {
     FetchLastPriceBinanceBTC();
-  }, [BTC_Data])
+  }, [Intervel])
 
 
 
@@ -495,7 +498,7 @@ const Index = () => {
                                 {row.symbol}
                               </TableCell>
                               <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.volume}</TableCell>
-                              <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.priceChangePercent+ "%"}</TableCell>
+                              <TableCell sx={{ color: "white", border: "unset" }} align="right">{+row.priceChangePercent + "%"}</TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

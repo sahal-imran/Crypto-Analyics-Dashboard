@@ -9,7 +9,7 @@ function MarketPriceOfBtc({ Price }) {
   const coinPrice = parseFloat(Price).toFixed(2)
   const Color =  LastPrice === coinPrice ? "white" : coinPrice > LastPrice ? "green" : 'red';
   LastPrice = coinPrice;
-  console.log(Color)
+  // console.log(Color)
   return (
     <Box
       sx={{
