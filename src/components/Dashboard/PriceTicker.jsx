@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import { Typography } from "@mui/material";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 
-function PriceTicker() {
+function PriceTicker({ Ticker }) {
+  const apiCall = {
+    method: "SUBSCRIBE",
+    params: [Ticker],
+    id: 1
+  };
+  const [Coin_INFO, setCoin_INFO] = useState([]);
+
+  useEffect(() => {
+    const ws = new WebSocket('wss://stream.binance.com:9443/stream');
+    ws.onopen = (event) => {
+      ws.send(JSON.stringify(apiCall));
+    };
+    ws.onmessage = function (event) {
+      const json = JSON.parse(event.data);
+      try {
+        if ((json.data)) {
+          setCoin_INFO(json.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    //clean up function
+    return () => ws.close();
+  }, []);
   return (
     <Box
       sx={{
@@ -23,11 +49,11 @@ function PriceTicker() {
       <Typography
         sx={{
           color: "black",
-          fontSize: { xs: "18px",md:"10px", lg: "18px" },
+          fontSize: { xs: "18px", md: "10px", lg: "18px" },
           fontWeight: 600,
         }}
       >
-        Btscusdt
+        {Coin_INFO.s}
       </Typography>
       <Box
         sx={{
@@ -39,18 +65,18 @@ function PriceTicker() {
         {/* price */}
         <Typography
           sx={{
-            color: "black",
-            fontSize: { xs: "26px", md:"12px",lg: "26px" },
+            color: `${+Coin_INFO.P > 0 ? "green" : "red"}`,
+            fontSize: { xs: "26px", md: "12px", lg: "26px" },
             fontWeight: 600,
           }}
         >
-          77.00K
+          {parseFloat(Coin_INFO.c)}
         </Typography>
         {/* percentage */}
         <Typography
           sx={{
-            color: "black",
-            fontSize: { xs: "16px",md:"12px", lg: "16px" },
+            color: `${+Coin_INFO.P > 0 ? "green" : "red"}`,
+            fontSize: { xs: "16px", md: "12px", lg: "16px" },
             fontWeight: 600,
             display: "flex",
             justifyContent: "center",
@@ -59,8 +85,8 @@ function PriceTicker() {
             ml: "16px",
           }}
         >
-          +11.01%
-          <TrendingUpIcon sx={{ fontSize: "16px" }} />
+          {+Coin_INFO.P > 0 ? "+" + Coin_INFO.P : Coin_INFO.P}
+          {+Coin_INFO.P > 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />}
         </Typography>
       </Box>
     </Box>

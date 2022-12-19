@@ -41,7 +41,7 @@ function Top5Coin({ Gainer }) {
         //clean up function
         return () => ws.close();
     }, []);
-    console.log(Tickers);
+    // console.log(Tickers);
 
 
     return (

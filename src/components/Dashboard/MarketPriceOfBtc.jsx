@@ -23,7 +23,10 @@ function MarketPriceOfBtc({ Price }) {
       const json = JSON.parse(event.data);
       try {
         if ((json.data)) {
-          setBTC_INFO(json.data);
+          const Data = json.data;
+          const color = parseFloat(Data.p) === parseFloat(BTC_INFO.p) ? "white" : parseFloat(Data.p) > parseFloat(BTC_INFO.p) ? "green" : "red";
+          Data.color = color;
+          setBTC_INFO(Data);
         }
       } catch (err) {
         console.log(err);
@@ -36,10 +39,14 @@ function MarketPriceOfBtc({ Price }) {
 
 
 
-  var LastPrice = null
-  const coinPrice = parseFloat(Price).toFixed(2)
-  const Color = LastPrice === coinPrice ? "white" : coinPrice > LastPrice ? "green" : 'red';
-  LastPrice = coinPrice;
+  // const CoinColor = (Price) => {
+  //   var coinPrice = parseFloat(Price).toFixed(2)
+  //   const LastPrice = parseFloat(localStorage.getItem("LastPrice"));
+  //   console.log(LastPrice);
+  //   var Color = !LastPrice || LastPrice === coinPrice ? "white" : coinPrice > LastPrice ? "green" : 'red';
+  //   localStorage.setItem("LastPrice", coinPrice);
+  //   return Color;
+  // }
   // console.log(Color)
   return (
     <Box
@@ -77,7 +84,7 @@ function MarketPriceOfBtc({ Price }) {
           {/* price */}
           <Typography
             sx={{
-              color: `${Color}`,
+              color: `${BTC_INFO.color}`,
               fontSize: { xs: "24px", md: "12px", lg: "26px" },
               fontWeight: 600,
             }}

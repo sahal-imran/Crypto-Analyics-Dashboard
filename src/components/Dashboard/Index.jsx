@@ -170,199 +170,19 @@ const Index = () => {
           <Box sx={{ width: "100%", p: "12px" }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6} md={2.4}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    background: "#E3F5FF",
-                    p: { xs: 2, lg: 3 },
-                    gap: 2,
-                    borderRadius: "10px",
-                  }}
-                >
-                  {/* coin name */}
-                  <Typography
-                    sx={{
-                      color: "black",
-                      fontSize: { xs: "18px", md: "10px", lg: "18px" },
-                      fontWeight: 600,
-                    }}
-                  >
-                    BTCUSDT
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: { xs: "space-between", lg: "space-between" },
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* price */}
-                    <Typography
-                      sx={{
-                        color: `${+BTC_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
-                        fontSize: { xs: "26px", md: "12px", lg: "20px" },
-                        fontWeight: 600,
-                      }}
-                    >
-                      {!BTC_Data ? "Loading" : +BTC_Data?.lastPrice}
-                    </Typography>
-                    {/* percentage */}
-                    <Typography
-                      sx={{
-                        color: `${+BTC_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
-                        fontSize: { xs: "16px", md: "12px", lg: "16px" },
-                        fontWeight: 600,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "5px",
-                        ml: "16px",
-                      }}
-                    >
-                      {+BTC_Data?.priceChangePercent >= 0 ? `+ ${BTC_Data?.priceChangePercent}` : `${BTC_Data?.priceChangePercent}`}
-                      {
-                        +BTC_Data?.priceChangePercent >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
-                      }
-                    </Typography>
-                  </Box>
-                </Box>
+                <PriceTicker Ticker={"btcusdt@ticker"} />
               </Grid>
               <Grid item xs={12} sm={6} md={2.4}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    background: "#E3F5FF",
-                    p: { xs: 2, lg: 3 },
-                    gap: 2,
-                    borderRadius: "10px",
-                  }}
-                >
-                  {/* coin name */}
-                  <Typography
-                    sx={{
-                      color: "black",
-                      fontSize: { xs: "18px", md: "10px", lg: "18px" },
-                      fontWeight: 600,
-                    }}
-                  >
-                    ETHUSDT
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: { xs: "space-between", lg: "space-between" },
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* price */}
-                    <Typography
-                      sx={{
-                        color: `${+ETH_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
-                        fontSize: { xs: "26px", md: "12px", lg: "20px" },
-                        fontWeight: 600,
-                      }}
-                    >
-                      {!ETH_Data ? "Loading" : +ETH_Data?.lastPrice}
-                    </Typography>
-                    {/* percentage */}
-                    <Typography
-                      sx={{
-                        color: `${+ETH_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
-                        fontSize: { xs: "16px", md: "12px", lg: "16px" },
-                        fontWeight: 600,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "5px",
-                        ml: "16px",
-                      }}
-                    >
-                      {+ETH_Data?.priceChangePercent >= 0 ? `+ ${ETH_Data?.priceChangePercent}` : `${ETH_Data?.priceChangePercent}`}
-                      {
-                        +ETH_Data?.priceChangePercent >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
-                      }
-                    </Typography>
-                  </Box>
-                </Box>
+                <PriceTicker Ticker={"ethusdt@ticker"} />
               </Grid>
               <Grid item xs={12} sm={6} md={2.4}>
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    background: "#E3F5FF",
-                    p: { xs: 2, lg: 3 },
-                    gap: 2,
-                    borderRadius: "10px",
-                  }}
-                >
-                  {/* coin name */}
-                  <Typography
-                    sx={{
-                      color: "black",
-                      fontSize: { xs: "18px", md: "10px", lg: "18px" },
-                      fontWeight: 600,
-                    }}
-                  >
-                    SHIBUSDT
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: { xs: "space-between", lg: "space-between" },
-                      alignItems: "center",
-                    }}
-                  >
-                    {/* price */}
-                    <Typography
-                      sx={{
-                        color: `${+SHIB_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
-                        fontSize: { xs: "20px", md: "12px", lg: "20px" },
-                        fontWeight: 600,
-                      }}
-                    >
-                      {!SHIB_Data ? "Loading" : +SHIB_Data?.lastPrice}
-                    </Typography>
-                    {/* percentage */}
-                    <Typography
-                      sx={{
-                        color: `${+SHIB_Data?.priceChangePercent >= 0 ? "green" : "red"}`,
-                        fontSize: { xs: "16px", md: "12px", lg: "16px" },
-                        fontWeight: 600,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        gap: "5px",
-                        ml: "16px",
-                      }}
-                    >
-                      {+SHIB_Data?.priceChangePercent >= 0 ? `+ ${SHIB_Data?.priceChangePercent}` : `${SHIB_Data?.priceChangePercent}`}
-                      {
-                        +SHIB_Data?.priceChangePercent >= 0 ? <TrendingUpIcon sx={{ fontSize: "16px" }} /> : <TrendingDownIcon sx={{ fontSize: "16px" }} />
-                      }
-                    </Typography>
-                  </Box>
-                </Box>
+                <PriceTicker Ticker={"shibusdt@ticker"} />
               </Grid>
               <Grid item xs={12} sm={6} md={2.4}>
-                <PriceTicker />
+                <PriceTicker Ticker={"btcusdt@ticker"} />
               </Grid>
               <Grid item xs={12} sm={6} md={2.4}>
-                <PriceTicker />
+                <PriceTicker Ticker={"btcusdt@ticker"} />
               </Grid>
             </Grid>
           </Box>
@@ -504,9 +324,9 @@ const Index = () => {
                 </Table>
               </TableContainer>
             </Box> */}
-            <Top5Coin Gainer = {true} />
+            <Top5Coin Gainer={true} />
             {/* worst coins */}
-            <Worst5Coin Gainer = {false} />
+            <Worst5Coin Gainer={false} />
             {/* <Box
               sx={{
                 width: { xs: "100%", sm: "50%" },
