@@ -88,6 +88,12 @@ const Index = () => {
         set_SHIB_Data(data[2]);
         set_BTC_Bybit_Data(data[3].result.list[0]);
         const Data = data[4];
+        const Tickers = [];
+        Data.map((item) => {
+          if(item.symbol === "BTCUSDT" || item.symbol === "ETHUSDT" || item.symbol === "SHIBUSDT")
+          Tickers.push(item);
+        })
+        console.log(Tickers);
         Data.sort((a, b) => {
           return parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent);
         });
@@ -103,7 +109,7 @@ const Index = () => {
   }
   const Intervel = setInterval(function () {
     return "hello"
-  }, 2000);
+  }, 5000);
 
   // console.log(BTC_Bybit_Data);
   useEffect(() => {
